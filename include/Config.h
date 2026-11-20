@@ -6,8 +6,12 @@
 //--------------------------------------------------------------------------
 // PIN Configuration
 //--------------------------------------------------------------------------
+#if defined(CONFIG_IDF_TARGET_ESP32S3)
+#define LED_PIN 4 // GPIO3 is a strapping pin on the ESP32-S3.
+#else
 #define LED_PIN 3 // Use direct pin number (ESP8266 currently unsupported)
-// Use GPIO 0-39, or 255 to disable an individual hardware button.
+#endif
+// Use a GPIO supported by your board, or 255 to disable a hardware button.
 #define POWER_BUTTON_PIN 255
 #define MODE_BUTTON_PIN 255
 #define SPEED_BUTTON_PIN 255
@@ -19,6 +23,10 @@
 // ESP32-C3: use direct pin numbers
 #define SDA_PIN_ESP32C3 255
 #define SCL_PIN_ESP32C3 255
+
+// ESP32-S3: use direct pin numbers, 255 disables I2C
+#define SDA_PIN_ESP32S3 255
+#define SCL_PIN_ESP32S3 255
 
 // ESP8266
 #define SDA_PIN_ESP8266 D2

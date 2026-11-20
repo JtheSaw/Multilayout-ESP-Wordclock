@@ -1,6 +1,6 @@
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/ESPWortuhr/Multilayout-ESP-Wordclock)
 ![GitHub all releases](https://img.shields.io/github/downloads/ESPWortuhr/Multilayout-ESP-Wordclock/total)
-![Platform](https://img.shields.io/badge/platform-ESP8266%20%7C%20ESP32%20%7C%20ESP32--C3-blue)
+![Platform](https://img.shields.io/badge/platform-ESP8266%20%7C%20ESP32%20%7C%20ESP32--C3%20%7C%20ESP32--S3-blue)
 ![GitHub stars](https://img.shields.io/github/stars/ESPWortuhr/Multilayout-ESP-Wordclock)
 ![GitHub contributors](https://img.shields.io/github/contributors/ESPWortuhr/Multilayout-ESP-Wordclock)
 ![License](https://img.shields.io/github/license/ESPWortuhr/Multilayout-ESP-Wordclock)
@@ -16,7 +16,7 @@
 <img src="pics/wortuhr-webpage-light.png" alt="Web interface in light mode, desktop on the left, phone on the right"/>
 <img src="pics/wortuhr-webpage-dark.png" alt="Web interface in dark mode, desktop on the left, phone on the right"/>
 
-Firmware for a multilingual word clock with an ESP8266, ESP32 or ESP32-C3 and an LED strip (WS2812 or SK6812).
+Firmware for a multilingual word clock with an ESP8266, ESP32, ESP32-C3 or ESP32-S3 and an LED strip (WS2812 or SK6812).
 
 ## Features
 
@@ -43,6 +43,19 @@ Firmware for a multilingual word clock with an ESP8266, ESP32 or ESP32-C3 and an
 1. Flash the matching firmware from the [releases page](https://github.com/ESPWortuhr/Multilayout-ESP-Wordclock/releases) or build it yourself.
 2. Connect to the WiFi network `Connect_to_Wordclock` and enter your home WiFi in the portal, or set time, colour and front there without WiFi.
 3. Open the web interface at the IP address the clock shows.
+
+### ESP32-S3 SuperMini
+
+The `ESP32S3` PlatformIO environment targets the **ESP32-S3 SuperMini (ESP32-S3FH4R2)** with 4 MB flash and 2 MB Quad SPI PSRAM. Build and flash over USB:
+
+```sh
+pio run -e ESP32S3
+pio run -e ESP32S3 -t upload
+```
+
+Connect the LED data input to **GPIO4** by default. LED and button pins can be changed in the web interface. I2C is initially disabled; configure SDA and SCL there or through `SDA_PIN_ESP32S3` and `SCL_PIN_ESP32S3` in `include/Config.h`. Keep GPIO19/20 available for USB and use only pins exposed by your board. If the board is not detected during the first upload, hold BOOT and briefly press RESET.
+
+Other ESP32-S3 Mini boards may require different flash/PSRAM settings; choose a board profile that matches the hardware.
 
 ## Documentation
 

@@ -3,18 +3,21 @@
 #include "Config.h"         // SDA_PIN_* / SCL_PIN_*
 #include "WordClockState.h" // HARDWARE_PIN_DISABLED
 #include <Wire.h>
+#ifdef ESP32
+#include <driver/gpio.h>
+#endif
 
 namespace i2cBus {
 
 namespace {
 
-#ifdef ESP8266
-constexpr uint8_t MAX_I2C_PIN = 16;
+bool pinIsInRange(uint8_t pin) {
+#ifdef ESP32
+    return GPIO_IS_VALID_OUTPUT_GPIO(pin);
 #else
-constexpr uint8_t MAX_I2C_PIN = 39;
+    return pin <= 16;
 #endif
-
-bool pinIsInRange(uint8_t pin) { return pin <= MAX_I2C_PIN; }
+}
 
 } // namespace
 
@@ -24,6 +27,8 @@ Pins defaultPins() {
 #elif defined(ESP32)
 #if defined(CONFIG_IDF_TARGET_ESP32C3)
     return {SDA_PIN_ESP32C3, SCL_PIN_ESP32C3};
+#elif defined(CONFIG_IDF_TARGET_ESP32S3)
+    return {SDA_PIN_ESP32S3, SCL_PIN_ESP32S3};
 #else
     return {SDA_PIN_ESP32, SCL_PIN_ESP32};
 #endif

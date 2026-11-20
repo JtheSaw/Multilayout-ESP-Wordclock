@@ -13,6 +13,7 @@
 #include <Update.h>
 #include <WebServer.h>
 #include <WiFi.h>
+#include <driver/gpio.h>
 #include <esp_sntp.h>
 #endif
 
@@ -105,12 +106,6 @@ constexpr uint16_t POWER_CYCLE_COUNT_ADDRESS = EEPROM_SIZE - 1;
 constexpr uint8_t POWER_CYCLE_RESET_LIMIT = 5;
 constexpr uint8_t CAPTIVE_PORTAL_POWER_CYCLE_COUNT = 3;
 constexpr uint8_t FACTORY_RESET_POWER_CYCLE_COUNT = 6;
-
-#ifdef ESP8266
-constexpr uint8_t MAX_HARDWARE_PIN = 16;
-#else
-constexpr uint8_t MAX_HARDWARE_PIN = 39;
-#endif
 } // namespace
 
 static_assert(sizeof(G) < EEPROM_SIZE,
@@ -192,12 +187,22 @@ void setDefaultHardwarePins() {
 
 //------------------------------------------------------------------------------
 
-bool isHardwarePinInRange(uint8_t pin) { return pin <= MAX_HARDWARE_PIN; }
+bool isHardwarePinInRange(uint8_t pin) {
+#ifdef ESP32
+    return GPIO_IS_VALID_GPIO(pin);
+#else
+    return pin <= 16;
+#endif
+}
 
 //------------------------------------------------------------------------------
 
 bool allHardwarePinsAreInRange() {
+#ifdef ESP32
+    if (!GPIO_IS_VALID_OUTPUT_GPIO(G.hardwarePins.led)) {
+#else
     if (!isHardwarePinInRange(G.hardwarePins.led)) {
+#endif
         return false;
     }
 

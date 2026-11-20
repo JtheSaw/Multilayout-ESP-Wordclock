@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        environment: [ESP8266, ESP32, ESP32C3]
+        environment: [ESP8266, ESP32, ESP32C3, ESP32S3]
 
     steps:
       - uses: actions/checkout@v7
